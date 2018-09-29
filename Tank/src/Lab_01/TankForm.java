@@ -100,7 +100,6 @@ public class TankForm extends JFrame {
 				}
 
 				TankForm.this.repaint();
-				// Draw();
 
 			}
 		});
