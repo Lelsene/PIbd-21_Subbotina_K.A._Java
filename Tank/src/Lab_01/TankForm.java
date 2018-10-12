@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 public class TankForm extends JFrame {
 
 	private JPanel contentPane;
-	private Tank tank;
+	private ITransport tank;
 
 	/**
 	 * Launch the application.
@@ -38,7 +38,7 @@ public class TankForm extends JFrame {
 		super.paint(g);
 		try {
 			if (tank != null) {
-				tank.drawTank(g);
+				tank.DrawTank(g);
 			}
 		} catch (Exception ex) {
 
@@ -50,16 +50,16 @@ public class TankForm extends JFrame {
 			String name = sender.getToolTipText();
 			switch (name) {
 			case "Up":
-				tank.moveTank(Direction.Up);
+				tank.MoveTank(Direction.Up);
 				break;
 			case "Down":
-				tank.moveTank(Direction.Down);
+				tank.MoveTank(Direction.Down);
 				break;
 			case "Left":
-				tank.moveTank(Direction.Left);
+				tank.MoveTank(Direction.Left);
 				break;
 			case "Right":
-				tank.moveTank(Direction.Right);
+				tank.MoveTank(Direction.Right);
 				break;
 			}
 			this.repaint();
@@ -80,19 +80,19 @@ public class TankForm extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JButton buttonCreate = new JButton("Draw");
+		JButton buttonCreate = new JButton("Draw HeavyTank");
 		buttonCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					tank = new Tank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000), Color.BLACK,
-							new Color(135, 192, 0));
+					tank = new HeavyTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
+							new Color(135, 192, 0), new Color(85, 107, 47), true, true);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 				try {
-					tank.setPosition(70 + (int) (Math.random() * 60), 70 + (int) (Math.random() * 160),
+					tank.SetPosition(70 + (int) (Math.random() * 60), 70 + (int) (Math.random() * 160),
 							TankForm.this.getWidth(), TankForm.this.getHeight());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -103,8 +103,31 @@ public class TankForm extends JFrame {
 
 			}
 		});
-		buttonCreate.setBounds(10, 11, 89, 42);
+		buttonCreate.setBounds(10, 11, 150, 42);
 		contentPane.add(buttonCreate);
+		
+		JButton buttonCreateBase = new JButton("Draw LightTank");
+		buttonCreateBase.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+	            try {
+					tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000), new Color(135, 192, 0));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            
+	            try {
+					tank.SetPosition(70 + (int) (Math.random() * 160), 70 + (int) (Math.random() * 160), TankForm.this.getWidth(), TankForm.this.getHeight());					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            
+	            TankForm.this.repaint();
+			}
+		});
+		buttonCreateBase.setBounds(170, 11, 150, 42);
+		contentPane.add(buttonCreateBase);
 
 		JButton buttonUp = new JButton("");
 		buttonUp.setToolTipText("Up");
