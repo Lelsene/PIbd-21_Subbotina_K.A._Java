@@ -1,22 +1,22 @@
 package Lab_01;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
 public class JPanelDraw extends JPanel {
 
-	private ITransport transport;
+	private ITransport tank;
 
-	public void setTransport(ITransport transport) {
-		this.transport = transport;
+	public void setTransport(ITransport tank) {
+		this.tank = tank;
 	}
 
-	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics2D g) {
 		super.paint(g);
-		if (transport != null) {
-			transport.DrawTank(g);
+		if (tank != null) {
+			tank.DrawTank(g);
 		}
 	}
 }

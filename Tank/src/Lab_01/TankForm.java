@@ -3,6 +3,7 @@ package Lab_01;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,7 +34,6 @@ public class TankForm extends JFrame {
 		});
 	}
 
-	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		try {

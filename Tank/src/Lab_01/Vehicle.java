@@ -2,6 +2,7 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public abstract class Vehicle implements ITransport {
 

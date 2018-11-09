@@ -2,6 +2,7 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class LightTank extends Vehicle {
 
@@ -49,7 +50,6 @@ public class LightTank extends Vehicle {
 		}
 	}
 	
-	@Override
 	public void DrawTank(Graphics g) {
 		g.setColor(getMainColor());
 		
@@ -71,5 +71,4 @@ public class LightTank extends Vehicle {
         g.drawOval((int)_startPosX + 65, (int)_startPosY + 42, 10, 10);
         g.drawOval((int)_startPosX + 75, (int)_startPosY + 40, 10, 10);
 	}
-
 }
