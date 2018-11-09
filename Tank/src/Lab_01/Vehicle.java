@@ -2,23 +2,22 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public abstract class Vehicle implements ITransport {
 
-	// Левая координата отрисовки автомобиля
+	// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	protected float _startPosX;
 
-	/// Правая кооридната отрисовки автомобиля
+	/// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	protected float _startPosY;
 
-	/// Ширина окна отрисовки
+	/// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	protected int _pictureWidth;
 
-	/// Высота окна отрисовки
+	/// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	protected int _pictureHeight;
 
-	// Максимальная скорость
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	public int MaxSpeed;
 
 	public int getMaxSpeed() {
@@ -29,7 +28,7 @@ public abstract class Vehicle implements ITransport {
 		MaxSpeed = value;
 	}
 
-	// Вес автомобиля
+	// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	public float Weight;
 
 	public float getWeight() {
@@ -40,7 +39,7 @@ public abstract class Vehicle implements ITransport {
 		Weight = value;
 	}
 
-	// Основной цвет кузова
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	public Color MainColor;
 
 	public Color getMainColor() {

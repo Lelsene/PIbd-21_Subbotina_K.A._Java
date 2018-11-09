@@ -2,13 +2,11 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class Garage<T extends ITransport> {
 
-	HashMap<Integer, T> places;
-
-	private int maxCount;
+	ArrayList<T> places;
 
 	private int pictureWidth;
 
@@ -19,19 +17,18 @@ public class Garage<T extends ITransport> {
 	private int placeSizeHeight = 80;
 
 	public Garage(int size, int pictureWidth, int pictureHeight) {
-		maxCount = size;
-		places = new HashMap<Integer, T>(size);
+		places = new ArrayList<T>(size);
 		this.pictureWidth = pictureWidth;
 		this.pictureHeight = pictureHeight;
+		for (int i = 0; i < size; i++) {
+			places.add(null);
+		}
 	}
 
 	public int addTank(T tank) {
-		if (places.size() == maxCount) {
-			return -1;
-		}
-		for (int i = 0; i < maxCount; i++) {
+		for (int i = 0; i < places.size(); i++) {
 			if (checkFreePlace(i)) {
-				places.put(i, tank);
+				places.add(i, tank);
 				places.get(i).SetPosition(10 + i / 5 * placeSizeWidth + 5, i % 5 * placeSizeHeight + 15, pictureWidth,
 						pictureHeight);
 				return i;
@@ -41,29 +38,34 @@ public class Garage<T extends ITransport> {
 	}
 
 	public T removeTank(int index) {
+		if (index < 0 || index > places.size()) {
+			return null;
+		}
 		if (!checkFreePlace(index)) {
-			T tank = places.get(index);
-			places.remove(index);
-			return tank;
+			T ship = places.get(index);
+			places.set(index, null);
+			return ship;
 		}
 		return null;
 	}
 
 	private boolean checkFreePlace(int index) {
-		return !places.containsKey(index);
+		return places.get(index) == null;
 	}
 
 	public void Draw(Graphics g) {
 		DrawMarking(g);
-		for (T i : places.values()) {
-			i.DrawTank(g);
+		for (int i = 0; i < places.size(); i++) {
+			if (!checkFreePlace(i)) {
+				places.get(i).DrawTank(g);
+			}
 		}
 	}
 
 	private void DrawMarking(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, (maxCount / 5) * placeSizeWidth, 480);
-		for (int i = 0; i < maxCount / 5; i++) {
+		g.drawRect(0, 0, (places.size() / 5) * placeSizeWidth, 480);
+		for (int i = 0; i < places.size() / 5; i++) {
 			for (int j = 0; j < 6; ++j) {
 				g.drawLine(i * placeSizeWidth, j * placeSizeHeight, i * placeSizeWidth + 110, j * placeSizeHeight);
 			}

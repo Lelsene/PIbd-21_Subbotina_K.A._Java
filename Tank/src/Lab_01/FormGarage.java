@@ -99,7 +99,7 @@ public class FormGarage extends JFrame {
 						secondColor, true, true);
 				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
                 if (place == -1) {
-                    JOptionPane.showMessageDialog(null, "Нет свободных мест");
+                    JOptionPane.showMessageDialog(null, "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
                 }
 				panelGarage.repaint();
 			}
@@ -118,7 +118,7 @@ public class FormGarage extends JFrame {
 						firstColor);
 				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
                 if (place == -1) {
-                    JOptionPane.showMessageDialog(null, "Нет свободных мест");
+                    JOptionPane.showMessageDialog(null, "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
                 }
 				panelGarage.repaint();
 			}
