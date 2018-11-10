@@ -62,7 +62,7 @@ public class FormGarage extends JFrame {
 		contentPane.setLayout(null);
 
 		JPanelGarage panelGarage = new JPanelGarage();
-		panelGarage.setBounds(10, 11, 627, 483);
+		panelGarage.setBounds(10, 11, 634, 483);
 		contentPane.add(panelGarage);
 		
 		DefaultListModel listModel = new DefaultListModel();

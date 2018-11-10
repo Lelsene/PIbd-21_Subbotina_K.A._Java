@@ -6,7 +6,7 @@ public class MultiLevelGarage {
 	
    ArrayList<Garage<ITransport>> garageStages;
    
-    private final int countPlaces = 20;
+    private final int countPlaces = 15;
     
     public MultiLevelGarage(int countStages, int pictureWidth, int pictureHeight) {
        garageStages = new ArrayList<Garage<ITransport>>();
