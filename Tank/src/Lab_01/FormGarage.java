@@ -24,14 +24,20 @@ import javax.swing.event.ListSelectionListener;
 public class FormGarage extends JFrame {
 
 	private JPanel contentPane;
-	
+
 	private JTextField textField;
 
-	private ITransport tank;
-	
-	private MultiLevelGarage garage;
+	private static ITransport tank;
+
+	private static JList list;
+
+	private static MultiLevelGarage garage;
 
 	private final int countLevel = 5;
+
+	private FormTankConfig form;
+
+	private static JPanelGarage panelGarage;
 
 	/**
 	 * Launch the application.
@@ -64,30 +70,29 @@ public class FormGarage extends JFrame {
 		JPanelGarage panelGarage = new JPanelGarage();
 		panelGarage.setBounds(10, 11, 634, 483);
 		contentPane.add(panelGarage);
-		
-		DefaultListModel listModel = new DefaultListModel();
-        for (int i = 0; i < countLevel; i++) {
-            listModel.addElement("\u0423\u0440\u043E\u0432\u0435\u043D\u044C " + Integer.toString(i + 1));
-        }
-         JList list = new JList(listModel);
-        list.setBounds(668, 11, 206, 107);
-        contentPane.add(list);
-        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        list.setSelectedIndex(0);
-        
-        ListSelectionListener listSelectionListener = new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                panelGarage.repaint();
-            }
-        };
-        list.addListSelectionListener(listSelectionListener);
 
-        garage = new MultiLevelGarage(countLevel, panelGarage.getWidth(), panelGarage.getHeight());
+		DefaultListModel listModel = new DefaultListModel();
+		for (int i = 0; i < countLevel; i++) {
+			listModel.addElement("\u0423\u0440\u043E\u0432\u0435\u043D\u044C " + Integer.toString(i + 1));
+		}
+		JList list = new JList(listModel);
+		list.setBounds(668, 11, 206, 107);
+		contentPane.add(list);
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setSelectedIndex(0);
+
+		ListSelectionListener listSelectionListener = new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				panelGarage.repaint();
+			}
+		};
+		list.addListSelectionListener(listSelectionListener);
+
+		garage = new MultiLevelGarage(countLevel, panelGarage.getWidth(), panelGarage.getHeight());
 		panelGarage.setGarage(garage);
 		panelGarage.setList(list);
 
-		
 		JButton buttonSetHeavyTank = new JButton("\u0422\u0430\u043D\u043A");
 		buttonSetHeavyTank.setFont(new Font("Verdana", Font.ITALIC, 13));
 		buttonSetHeavyTank.addActionListener(new ActionListener() {
@@ -98,9 +103,9 @@ public class FormGarage extends JFrame {
 				tank = new HeavyTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000), firstColor,
 						secondColor, true, true);
 				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-                if (place == -1) {
-                    JOptionPane.showMessageDialog(null, "��� ��������� ����");
-                }
+				if (place == -1) {
+					JOptionPane.showMessageDialog(null, "Нет свободных мест");
+				}
 				panelGarage.repaint();
 			}
 		});
@@ -117,9 +122,9 @@ public class FormGarage extends JFrame {
 				tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
 						firstColor);
 				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-                if (place == -1) {
-                    JOptionPane.showMessageDialog(null, "��� ��������� ����");
-                }
+				if (place == -1) {
+					JOptionPane.showMessageDialog(null, "Нет свободных мест");
+				}
 				panelGarage.repaint();
 			}
 		});
@@ -145,8 +150,8 @@ public class FormGarage extends JFrame {
 		buttonTakeTank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (list.getSelectedIndex() == -1) {
-                    return;
-                }
+					return;
+				}
 				int numberOfPlace = 0;
 				try {
 					numberOfPlace = Integer.parseInt(textField.getText());
@@ -165,14 +170,37 @@ public class FormGarage extends JFrame {
 				panelTakeTank.setTransport(tank);
 				panelTakeTank.repaint();
 				panelGarage.repaint();
-            }
+			}
 		});
 		buttonTakeTank.setBounds(20, 39, 176, 23);
 		panelGroupElements.add(buttonTakeTank);
-		
+
 		textField = new JTextField();
 		textField.setBounds(60, 11, 136, 20);
 		panelGroupElements.add(textField);
 		textField.setColumns(10);
+
+		JButton btnAdd = new JButton("Добавить");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				form = new FormTankConfig();
+				form.setVisible(true);
+				if (FormTankConfig.y == true) {
+					tank = FormTankConfig.tank;
+					if (tank != null) {
+						int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
+						if (place == -1) {
+							JOptionPane.showMessageDialog(null, "Нет свободных мест");
+						}
+						panelGarage.repaint();
+					}
+				}
+				FormTankConfig.y = false;
+			}
+		});
+		btnAdd.setBounds(668, 255, 206, 38);
+		contentPane.add(btnAdd);
+		
 	}
 }

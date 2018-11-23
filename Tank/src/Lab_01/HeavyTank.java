@@ -9,7 +9,6 @@ public class HeavyTank extends LightTank {
 
 	private static final int carHeight = 60;
 
-	// �������������� ����
 	private Color DopColor;
 
 	public Color getDopColor() {
@@ -20,7 +19,6 @@ public class HeavyTank extends LightTank {
 		DopColor = value;
 	}
 
-	// ������� ������� ������� ����
 	private boolean FirstMuzzle;
 
 	public boolean getFirstMuzzle() {
@@ -31,7 +29,6 @@ public class HeavyTank extends LightTank {
 		FirstMuzzle = value;
 	}
 
-	// ������� ������� ������� ����
 	private boolean SecondMuzzle;
 
 	public boolean getSecondMuzzle() {
@@ -42,7 +39,6 @@ public class HeavyTank extends LightTank {
 		SecondMuzzle = value;
 	}
 
-	// �����������
 	public HeavyTank(int maxSpeed, float weight, Color mainColor, Color dopColor, boolean firstMuzzle,
 			boolean secondMuzzle) {
 		super(maxSpeed, weight, mainColor);
@@ -57,7 +53,6 @@ public class HeavyTank extends LightTank {
 		super.DrawTank(g);
 		g.setColor(getDopColor());
 		
-		// ����
 		if (FirstMuzzle) {
 			g.fillRect((int) _startPosX + 10, (int) _startPosY + 12, 40, 3);
 		}
