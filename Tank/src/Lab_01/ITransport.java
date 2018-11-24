@@ -10,6 +10,6 @@ public interface ITransport {
 	void MoveTank(Direction direction);
 
 	void DrawTank(Graphics g);
-	
+
 	void setMainColor(Color color);
 }

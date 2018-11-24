@@ -55,9 +55,9 @@ public class Garage<T extends ITransport> {
 
 	public void Draw(Graphics g) {
 		DrawMarking(g);
-		for (T i: places.values()) {
-            i.DrawTank(g);
-        }
+		for (T i : places.values()) {
+			i.DrawTank(g);
+		}
 	}
 
 	private void DrawMarking(Graphics g) {

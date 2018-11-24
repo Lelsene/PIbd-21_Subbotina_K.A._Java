@@ -105,25 +105,27 @@ public class TankForm extends JFrame {
 		});
 		buttonCreate.setBounds(10, 11, 150, 42);
 		contentPane.add(buttonCreate);
-		
+
 		JButton buttonCreateBase = new JButton("Draw LightTank");
 		buttonCreateBase.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-	            try {
-					tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000), new Color(135, 192, 0));
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
+							new Color(135, 192, 0));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            
-	            try {
-					tank.SetPosition(70 + (int) (Math.random() * 160), 70 + (int) (Math.random() * 160), TankForm.this.getWidth(), TankForm.this.getHeight());					
+
+				try {
+					tank.SetPosition(70 + (int) (Math.random() * 160), 70 + (int) (Math.random() * 160),
+							TankForm.this.getWidth(), TankForm.this.getHeight());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-	            
-	            TankForm.this.repaint();
+
+				TankForm.this.repaint();
 			}
 		});
 		buttonCreateBase.setBounds(170, 11, 150, 42);

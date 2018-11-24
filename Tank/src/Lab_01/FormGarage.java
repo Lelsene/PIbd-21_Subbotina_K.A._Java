@@ -23,6 +23,8 @@ import javax.swing.event.ListSelectionListener;
 
 public class FormGarage extends JFrame {
 
+	JFrame frame;
+
 	private JPanel contentPane;
 
 	private JTextField textField;
@@ -35,9 +37,11 @@ public class FormGarage extends JFrame {
 
 	private final int countLevel = 5;
 
-	private FormTankConfig form;
-
 	private static JPanelGarage panelGarage;
+
+	private TankConfig select;
+
+	private String[] elements = new String[6];
 
 	/**
 	 * Launch the application.
@@ -58,6 +62,7 @@ public class FormGarage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("unchecked")
 	public FormGarage() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 544);
@@ -71,65 +76,41 @@ public class FormGarage extends JFrame {
 		panelGarage.setBounds(10, 11, 634, 483);
 		contentPane.add(panelGarage);
 
-		DefaultListModel listModel = new DefaultListModel();
-		for (int i = 0; i < countLevel; i++) {
-			listModel.addElement("\u0423\u0440\u043E\u0432\u0435\u043D\u044C " + Integer.toString(i + 1));
-		}
-		JList list = new JList(listModel);
-		list.setBounds(668, 11, 206, 107);
+		list = new JList(elements);
+		list.setBounds(665, 8, 206, 107);
 		contentPane.add(list);
-		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		list.setSelectedIndex(0);
 
-		ListSelectionListener listSelectionListener = new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
+		JButton btnLevelDown = new JButton("Down");
+		btnLevelDown.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnLevelDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				garage.levelDown();
+				list.setSelectedIndex(garage.getCurrentLevel());
 				panelGarage.repaint();
 			}
-		};
-		list.addListSelectionListener(listSelectionListener);
+		});
+		btnLevelDown.setBounds(716, 126, 96, 32);
+		contentPane.add(btnLevelDown);
+
+		JButton btnLevelUp = new JButton("Up");
+		btnLevelUp.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnLevelUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				garage.levelUp();
+				list.setSelectedIndex(garage.getCurrentLevel());
+				panelGarage.repaint();
+			}
+		});
+		btnLevelUp.setBounds(716, 163, 96, 34);
+		contentPane.add(btnLevelUp);
+
+		for (int i = 0; i < 5; i++) {
+			elements[i] = "Level " + (i + 1);
+		}
 
 		garage = new MultiLevelGarage(countLevel, panelGarage.getWidth(), panelGarage.getHeight());
 		panelGarage.setGarage(garage);
 		panelGarage.setList(list);
-
-		JButton buttonSetHeavyTank = new JButton("\u0422\u0430\u043D\u043A");
-		buttonSetHeavyTank.setFont(new Font("Verdana", Font.ITALIC, 13));
-		buttonSetHeavyTank.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Color firstColor = JColorChooser.showDialog(null, "Choose a Color", Color.WHITE);
-				Color secondColor = JColorChooser.showDialog(null, "Choose a Color", Color.WHITE);
-				tank = new HeavyTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000), firstColor,
-						secondColor, true, true);
-				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-				if (place == -1) {
-					JOptionPane.showMessageDialog(null, "Нет свободных мест");
-				}
-				panelGarage.repaint();
-			}
-		});
-		buttonSetHeavyTank.setBounds(668, 204, 206, 40);
-		contentPane.add(buttonSetHeavyTank);
-
-		JButton buttonSetLightTank = new JButton(
-				"\u0411\u0440\u043E\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u043C\u0430\u0448\u0438\u043D\u0430");
-		buttonSetLightTank.setFont(new Font("Verdana", Font.ITALIC, 13));
-		buttonSetLightTank.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Color firstColor = JColorChooser.showDialog(null, "Choose a Color", Color.WHITE);
-				tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
-						firstColor);
-				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-				if (place == -1) {
-					JOptionPane.showMessageDialog(null, "Нет свободных мест");
-				}
-				panelGarage.repaint();
-			}
-		});
-		buttonSetLightTank.setBounds(668, 129, 206, 68);
-		contentPane.add(buttonSetLightTank);
 
 		JPanel panelGroupElements = new JPanel();
 		panelGroupElements.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -138,15 +119,17 @@ public class FormGarage extends JFrame {
 		contentPane.add(panelGroupElements);
 		panelGroupElements.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("\u041C\u0435\u0441\u0442\u043E");
-		lblNewLabel.setBounds(10, 14, 50, 14);
-		panelGroupElements.add(lblNewLabel);
+		JLabel lblPlace = new JLabel("Place:");
+		lblPlace.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPlace.setBounds(10, 8, 50, 23);
+		panelGroupElements.add(lblPlace);
 
 		JPanelDraw panelTakeTank = new JPanelDraw();
 		panelTakeTank.setBounds(20, 73, 165, 103);
 		panelGroupElements.add(panelTakeTank);
 
-		JButton buttonTakeTank = new JButton("\u0417\u0430\u0431\u0440\u0430\u0442\u044C");
+		JButton buttonTakeTank = new JButton("Take");
+		buttonTakeTank.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		buttonTakeTank.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (list.getSelectedIndex() == -1) {
@@ -180,27 +163,26 @@ public class FormGarage extends JFrame {
 		panelGroupElements.add(textField);
 		textField.setColumns(10);
 
-		JButton btnAdd = new JButton("Добавить");
+		JButton btnAdd = new JButton("Add");
+		btnAdd.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				form = new FormTankConfig();
-				form.setVisible(true);
-				if (FormTankConfig.y == true) {
-					tank = FormTankConfig.tank;
-					if (tank != null) {
-						int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-						if (place == -1) {
-							JOptionPane.showMessageDialog(null, "Нет свободных мест");
-						}
-						panelGarage.repaint();
-					}
-				}
-				FormTankConfig.y = false;
+				getTank();
 			}
 		});
 		btnAdd.setBounds(668, 255, 206, 38);
 		contentPane.add(btnAdd);
-		
+	}
+
+	public void getTank() {
+		select = new TankConfig(frame);
+		if (select.res()) {
+			ITransport tank = select.getTank();
+			int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
+			if (place < 0) {
+				JOptionPane.showMessageDialog(null, "No free place");
+			}
+			contentPane.repaint();
+		}
 	}
 }

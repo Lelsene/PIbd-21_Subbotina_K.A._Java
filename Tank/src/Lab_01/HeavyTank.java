@@ -52,11 +52,11 @@ public class HeavyTank extends LightTank {
 	public void DrawTank(Graphics g) {
 		super.DrawTank(g);
 		g.setColor(getDopColor());
-		
+
 		if (FirstMuzzle) {
 			g.fillRect((int) _startPosX + 10, (int) _startPosY + 12, 40, 3);
 		}
-		
+
 		if (SecondMuzzle) {
 			g.fillRect((int) _startPosX + 8, (int) _startPosY + 17, 40, 3);
 		}
