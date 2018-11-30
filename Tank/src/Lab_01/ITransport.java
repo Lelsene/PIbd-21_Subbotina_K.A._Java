@@ -12,4 +12,6 @@ public interface ITransport {
 	void DrawTank(Graphics g);
 
 	void setMainColor(Color color);
+
+	String getInfo();
 }

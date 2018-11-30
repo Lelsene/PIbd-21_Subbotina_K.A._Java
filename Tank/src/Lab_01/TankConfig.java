@@ -347,7 +347,7 @@ public class TankConfig extends JDialog {
 		}
 	}
 
-	public Color selectColor(String s) {
+	public static Color selectColor(String s) {
 		switch (s) {
 		case "yellow":
 			return Color.yellow;
@@ -366,7 +366,6 @@ public class TankConfig extends JDialog {
 		case "cyan":
 			return Color.cyan;
 		}
-
 		return null;
 	}
 }

@@ -33,7 +33,7 @@ public abstract class Vehicle implements ITransport {
 		Weight = value;
 	}
 
-	public Color MainColor;
+	transient public Color MainColor;
 
 	public Color getMainColor() {
 		return MainColor;
@@ -53,5 +53,7 @@ public abstract class Vehicle implements ITransport {
 	public abstract void DrawTank(Graphics g);
 
 	public abstract void MoveTank(Direction direction);
+
+	public abstract String getInfo();
 
 }

@@ -2,9 +2,10 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Garage<T extends ITransport> {
+public class Garage<T extends ITransport> implements Serializable {
 
 	HashMap<Integer, T> places;
 
@@ -51,6 +52,14 @@ public class Garage<T extends ITransport> {
 
 	private boolean checkFreePlace(int index) {
 		return !places.containsKey(index);
+	}
+
+	public T getTank(int index) {
+		if (places.get(index) != null) {
+			return places.get(index);
+		} else {
+			return null;
+		}
 	}
 
 	public void Draw(Graphics g) {

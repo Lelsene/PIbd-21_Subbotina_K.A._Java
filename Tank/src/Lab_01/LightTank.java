@@ -2,8 +2,13 @@ package Lab_01;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Random;
 
-public class LightTank extends Vehicle {
+public class LightTank extends Vehicle implements Serializable {
 
 	protected final int carWidth = 100;
 
@@ -13,6 +18,15 @@ public class LightTank extends Vehicle {
 		MaxSpeed = maxSpeed;
 		Weight = weight;
 		MainColor = mainColor;
+	}
+
+	public LightTank(String info) {
+		String[] str = info.split(";");
+		if (str.length == 5) {
+			MaxSpeed = Integer.parseInt(str[0]);
+			Weight = Float.parseFloat(str[1]);
+			MainColor = new Color(Integer.parseInt(str[2]), Integer.parseInt(str[3]), Integer.parseInt(str[4]));
+		}
 	}
 
 	@Override
@@ -62,4 +76,9 @@ public class LightTank extends Vehicle {
 		g.drawOval((int) _startPosX + 75, (int) _startPosY + 40, 10, 10);
 	}
 
+	@Override
+	public String getInfo() {
+		return MaxSpeed + ";" + Weight + ";" + MainColor.getRed() + ";" + MainColor.getGreen() + ";"
+				+ MainColor.getBlue();
+	}
 }
