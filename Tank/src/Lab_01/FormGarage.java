@@ -5,8 +5,12 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -48,6 +52,10 @@ public class FormGarage extends JFrame {
 
 	private String[] elements = new String[6];
 
+	private Logger log;
+
+	private String logPath = "C:\\Users\\Шонова\\Desktop\\log.txt";
+
 	/**
 	 * Launch the application.
 	 */
@@ -67,8 +75,25 @@ public class FormGarage extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("unchecked")
-	public FormGarage() {
+	public FormGarage() throws SecurityException, IOException {
+		
+		log = Logger.getLogger(FormGarage.class.getName());
+		try {
+			FileInputStream fis = new FileInputStream("p.properties");
+			LogManager.getLogManager().readConfiguration(fis);
+			FileHandler fh = null;
+			fh = new FileHandler(logPath);
+			log.addHandler(fh);
+			log.setUseParentHandlers(false);
+			fis.close();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 561);
 
@@ -86,10 +111,9 @@ public class FormGarage extends JFrame {
 				filesave.setFileFilter(filter);
 				if (filesave.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
 					File file = filesave.getSelectedFile();
-					String path = file.getAbsolutePath();
-					if (garage.save(path)) {
+					if (garage.save(file.getAbsolutePath())) {
+						log.log(Level.INFO, "Saved the garage in " + file.getAbsolutePath());
 						JOptionPane.showMessageDialog(null, "Saved");
-						return;
 					} else {
 						JOptionPane.showMessageDialog(null, "Save failed", "", 0, null);
 					}
@@ -108,6 +132,7 @@ public class FormGarage extends JFrame {
 					File file = fileChooser.getSelectedFile();
 					try {
 						if (garage.load(file.getAbsolutePath())) {
+							log.log(Level.INFO, "Loaded the garage from " + file.getAbsolutePath());
 							JOptionPane.showMessageDialog(null, "Loaded");
 						} else {
 							JOptionPane.showMessageDialog(null, "Load failed", "", 0, null);
@@ -140,7 +165,8 @@ public class FormGarage extends JFrame {
 		btnLevelDown.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnLevelDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				garage.levelDown();
+				if (garage.levelDown())
+					log.log(Level.INFO, "Moved to the {0} garage level", garage.getCurrentLevel() + 1);
 				list.setSelectedIndex(garage.getCurrentLevel());
 				panelGarage.repaint();
 			}
@@ -152,7 +178,8 @@ public class FormGarage extends JFrame {
 		btnLevelUp.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnLevelUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				garage.levelUp();
+				if (garage.levelUp())
+					log.log(Level.INFO, "Moved to the {0} garage level", garage.getCurrentLevel() + 1);
 				list.setSelectedIndex(garage.getCurrentLevel());
 				panelGarage.repaint();
 			}
@@ -194,21 +221,22 @@ public class FormGarage extends JFrame {
 				int numberOfPlace = 0;
 				try {
 					numberOfPlace = Integer.parseInt(textField.getText());
-				} catch (Exception ex) {
-					textField.setText("Invalid input");
-					return;
-				}
-				if (numberOfPlace >= garage.getGarage(list.getSelectedIndex()).places.size() || numberOfPlace < 0) {
-					textField.setText("Invalid input");
-					return;
-				}
-				tank = garage.getGarage(list.getSelectedIndex()).removeTank(numberOfPlace);
-				if (tank != null) {
+					tank = garage.getGarage(list.getSelectedIndex()).removeTank(numberOfPlace);
 					tank.SetPosition(5, 5, panelTakeTank.getWidth(), panelTakeTank.getHeight());
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Wrong format", "Error", 0, null);
+					return;
+				} catch (NullPointerException e) {
+					JOptionPane.showMessageDialog(null, "Empty", "Error", 0, null);
+					return;
+				} catch (GarageNotFoundException e) {
+					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
+					return;
 				}
 				panelTakeTank.setTransport(tank);
 				panelTakeTank.repaint();
 				panelGarage.repaint();
+				log.log(Level.INFO, "Took the tank from garage in place {0}", numberOfPlace);
 			}
 		});
 		buttonTakeTank.setBounds(20, 39, 176, 23);
@@ -232,13 +260,19 @@ public class FormGarage extends JFrame {
 
 	public void getTank() {
 		select = new TankConfig(frame);
-		if (select.res()) {
-			ITransport tank = select.getTank();
-			int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
-			if (place < 0) {
-				JOptionPane.showMessageDialog(null, "No free place");
+		try {
+			if (select.res()) {
+				ITransport tank = select.getTank();
+				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
+				contentPane.repaint();
+				log.log(Level.INFO, "Added new tank on place {0}", place);
 			}
-			contentPane.repaint();
+		} catch (GarageOverflowException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
+			return;
+		} catch (GarageOccupiedPlaceException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
+			return;
 		}
 	}
 }

@@ -47,14 +47,20 @@ public class MultiLevelGarage {
 		return currentLevel;
 	}
 
-	public void levelUp() {
-		if (currentLevel + 1 < garageStages.size())
+	public boolean levelUp() {
+		if (currentLevel + 1 < garageStages.size()) {
 			currentLevel++;
+			return true;
+		}
+		return false;
 	}
 
-	public void levelDown() {
-		if (currentLevel > 0)
+	public boolean levelDown() {
+		if (currentLevel > 0) {
 			currentLevel--;
+			return true;
+		}
+		return false;
 	}
 
 	public boolean save(String filename) {
@@ -103,7 +109,7 @@ public class MultiLevelGarage {
 		}
 	}
 
-	public boolean load(String filename) {
+	public boolean load(String filename) throws GarageOverflowException, GarageOccupiedPlaceException {
 		File file = new File(filename);
 		if (!file.exists()) {
 			return false;

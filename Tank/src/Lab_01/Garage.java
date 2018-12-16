@@ -26,9 +26,9 @@ public class Garage<T extends ITransport> implements Serializable {
 		this.pictureHeight = pictureHeight;
 	}
 
-	public int addTank(T tank) {
+	public int addTank(T tank) throws GarageOverflowException, GarageOccupiedPlaceException {
 		if (places.size() == maxCount) {
-			return -1;
+			throw new GarageOverflowException();
 		}
 		for (int i = 0; i < maxCount; i++) {
 			if (checkFreePlace(i)) {
@@ -38,16 +38,16 @@ public class Garage<T extends ITransport> implements Serializable {
 				return i;
 			}
 		}
-		return -1;
+		throw new GarageOccupiedPlaceException();
 	}
 
-	public T removeTank(int index) {
+	public T removeTank(int index) throws GarageNotFoundException {
 		if (!checkFreePlace(index)) {
 			T tank = places.get(index);
 			places.remove(index);
 			return tank;
 		}
-		return null;
+		throw new GarageNotFoundException();
 	}
 
 	private boolean checkFreePlace(int index) {
