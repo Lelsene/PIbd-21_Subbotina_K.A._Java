@@ -76,7 +76,7 @@ public class FormGarage extends JFrame {
 	 * Create the frame.
 	 */
 	public FormGarage() throws SecurityException, IOException {
-		
+
 		log = Logger.getLogger(FormGarage.class.getName());
 		try {
 			FileInputStream fis = new FileInputStream("p.properties");
@@ -236,7 +236,7 @@ public class FormGarage extends JFrame {
 				panelTakeTank.setTransport(tank);
 				panelTakeTank.repaint();
 				panelGarage.repaint();
-				log.log(Level.INFO, "Took the tank from garage in place {0}", numberOfPlace);
+				log.log(Level.INFO, "Took the tank from garage in place " + numberOfPlace);
 			}
 		});
 		buttonTakeTank.setBounds(20, 39, 176, 23);
@@ -256,6 +256,17 @@ public class FormGarage extends JFrame {
 		});
 		btnAdd.setBounds(668, 255, 206, 38);
 		contentPane.add(btnAdd);
+
+		JButton btnSort = new JButton("Sort");
+		btnSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				garage.Sort();
+				contentPane.repaint();
+			}
+		});
+		btnSort.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnSort.setBounds(716, 200, 96, 34);
+		contentPane.add(btnSort);
 	}
 
 	public void getTank() {
@@ -265,12 +276,16 @@ public class FormGarage extends JFrame {
 				ITransport tank = select.getTank();
 				int place = garage.getGarage(list.getSelectedIndex()).addTank(tank);
 				contentPane.repaint();
-				log.log(Level.INFO, "Added new tank on place {0}", place);
+				log.log(Level.INFO, "Added new tank to garage level " + garage.getCurrentLevel() + 1 + " on place {0}",
+						place);
 			}
 		} catch (GarageOverflowException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
 			return;
 		} catch (GarageOccupiedPlaceException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
+			return;
+		} catch (GarageAlreadyHaveException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", 0, null);
 			return;
 		}

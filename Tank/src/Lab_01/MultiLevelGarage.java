@@ -109,7 +109,8 @@ public class MultiLevelGarage {
 		}
 	}
 
-	public boolean load(String filename) throws GarageOverflowException, GarageOccupiedPlaceException {
+	public boolean load(String filename)
+			throws GarageOverflowException, GarageOccupiedPlaceException, GarageAlreadyHaveException {
 		File file = new File(filename);
 		if (!file.exists()) {
 			return false;
@@ -159,5 +160,9 @@ public class MultiLevelGarage {
 		} catch (IOException ex) {
 			return false;
 		}
+	}
+
+	public void Sort() {
+		garageStages.sort(null);
 	}
 }

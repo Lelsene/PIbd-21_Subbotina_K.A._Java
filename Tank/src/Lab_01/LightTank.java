@@ -8,13 +8,13 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Random;
 
-public class LightTank extends Vehicle implements Serializable {
+public class LightTank extends Vehicle implements Serializable, Comparable<LightTank> {
 
 	protected final int carWidth = 100;
 
 	protected final int carHeight = 60;
 
-	public LightTank(int maxSpeed, float weight, Color mainColor) {
+	public LightTank(int maxSpeed, int weight, Color mainColor) {
 		MaxSpeed = maxSpeed;
 		Weight = weight;
 		MainColor = mainColor;
@@ -24,7 +24,7 @@ public class LightTank extends Vehicle implements Serializable {
 		String[] str = info.split(";");
 		if (str.length == 5) {
 			MaxSpeed = Integer.parseInt(str[0]);
-			Weight = Float.parseFloat(str[1]);
+			Weight = Integer.parseInt(str[1]);
 			MainColor = new Color(Integer.parseInt(str[2]), Integer.parseInt(str[3]), Integer.parseInt(str[4]));
 		}
 	}
@@ -80,5 +80,50 @@ public class LightTank extends Vehicle implements Serializable {
 	public String getInfo() {
 		return MaxSpeed + ";" + Weight + ";" + MainColor.getRed() + ";" + MainColor.getGreen() + ";"
 				+ MainColor.getBlue();
+	}
+
+	@Override
+	public int compareTo(LightTank another) {
+		if (another == null) {
+			return 1;
+		}
+		if (MaxSpeed != another.MaxSpeed) {
+			return Integer.valueOf(MaxSpeed).compareTo(another.MaxSpeed);
+		}
+		if (Weight != another.Weight) {
+			return Integer.valueOf(Weight).compareTo(another.Weight);
+		}
+		if (MainColor != another.MainColor) {
+			return Integer.valueOf(MainColor.getRGB()).compareTo(another.MainColor.getRGB());
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean equals(Object another) {
+		if (another == null) {
+			return false;
+		}
+		if (!(another instanceof LightTank)) {
+			return false;
+		}
+		LightTank tank = (LightTank) another;
+		return equals(tank);
+	}
+
+	public boolean equals(LightTank another) {
+		if (another == null) {
+			return false;
+		}
+		if (MaxSpeed != another.MaxSpeed) {
+			return false;
+		}
+		if (Weight != another.Weight) {
+			return false;
+		}
+		if (MainColor != another.MainColor) {
+			return false;
+		}
+		return true;
 	}
 }

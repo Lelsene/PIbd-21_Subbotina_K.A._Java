@@ -229,11 +229,9 @@ public class TankConfig extends JDialog {
 				try {
 					for (DataFlavor df : e.getTransferable().getTransferDataFlavors()) {
 						if (e.getTransferable().getTransferData(df) == "LightTank") {
-							tank = new LightTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
-									Color.WHITE);
+							tank = new LightTank(100, 1000, Color.WHITE);
 						} else if (e.getTransferable().getTransferData(df) == "HeavyTank") {
-							tank = new HeavyTank(100 + (int) (Math.random() * 300), 1000 + (int) (Math.random() * 2000),
-									Color.WHITE, Color.BLACK, true, true);
+							tank = new HeavyTank(100, 1000, Color.WHITE, Color.BLACK, true, true);
 						}
 						draw(panel, tank);
 					}
